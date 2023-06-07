@@ -72,10 +72,6 @@ app.post('/api/persons', (request, response, next) => {
         return response.status(400).json({
             error: 'content missing'
         })
-    }else if(persons.filter(n => n.name === body.name).length > 0){
-        return response.status(400).json({
-            error: 'name must be unique'
-        })
     }
     const person = new Person({
         name: body.name,
