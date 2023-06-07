@@ -78,11 +78,11 @@ app.post('/api/persons', (request, response) => {
             error: 'name must be unique'
         })
     }
-    const person = {
+    const person = new Person({
         name: body.name,
         number: body.number,
         id: generateId()
-    }
+    })
 
     person.save().then(savedPerson => {
         response.json(savedPerson)
