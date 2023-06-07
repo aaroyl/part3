@@ -84,9 +84,9 @@ app.post('/api/persons', (request, response) => {
         id: generateId()
     }
 
-    persons = persons.concat(person)
-
-    response.json(person)
+    person.save().then(savedPerson => {
+        response.json(savedPerson)
+    })
 })
 
 app.get('/info', (request, response) => {
