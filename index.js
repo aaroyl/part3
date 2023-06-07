@@ -20,24 +20,6 @@ app.use(morgan(function (tokens, req, res) {
     ].join(' ')
   }))
 
-const unknownEndpoint = (request, response) => {
-    response.status(404).send({error: 'unknown endpoint'})
-}
-
-app.use(unknownEndpoint)
-
-const errorHandler = (error, request, response, next) => {
-    console.error(error.message)
-
-    if(error.name === 'castError'){
-        return response.status(400).send({error: 'malformatted id'})
-    }
-
-    next(error)
-}
-
-app.use(errorHandler)
-
 const generateId = () => {
     return Math.floor(Math.random() * 1000000)
 }
@@ -50,7 +32,7 @@ app.get('/api/persons', (request, response) => {
 
 app.get('/api/persons/:id', (request, response, next) => {
     Person.findById(request.params.id).then(person => {
-        console.log(person)
+        response.json(person)
         if(person){
             response.json(person)
         }else{
@@ -116,6 +98,24 @@ app.get('/info', (request, response) => {
     )
     
 })
+
+const unknownEndpoint = (request, response) => {
+    response.status(404).send({error: 'unknown endpoint'})
+}
+
+app.use(unknownEndpoint)
+
+const errorHandler = (error, request, response, next) => {
+    console.error(error.message)
+
+    if(error.name === 'castError'){
+        return response.status(400).send({error: 'malformatted id'})
+    }
+
+    next(error)
+}
+
+app.use(errorHandler)
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
