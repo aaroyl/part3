@@ -84,13 +84,16 @@ app.post('/api/persons', (request, response, next) => {
 })
 
 app.get('/info', (request, response) => {
-    const phonebookLength = persons.length
-    const currDate = new Date().toLocaleString()
-    response.send(
-        "<div>Phonebook has info for " 
-        + phonebookLength 
-        + " people</div><div>" + currDate + "</div>"
-    )
+    Person.find({}).then(persons => {
+        const phonebookLength = persons.length
+        const currDate = new Date().toLocaleString()
+        response.send(
+            "<div>Phonebook has info for " 
+            + phonebookLength 
+            + " people</div><div>" + currDate + "</div>"
+        )
+    })
+    
     
 })
 
