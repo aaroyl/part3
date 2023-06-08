@@ -11,18 +11,14 @@ app.use(express.json())
 
 app.use(morgan(function (tokens, req, res) {
     return [
-      tokens.method(req, res),
-      tokens.url(req, res),
-      tokens.status(req, res),
-      tokens.res(req, res, 'content-length'), '-',
-      tokens['response-time'](req, res), 'ms',
-      JSON.stringify(req.body)
+        tokens.method(req, res),
+        tokens.url(req, res),
+        tokens.status(req, res),
+        tokens.res(req, res, 'content-length'), '-',
+        tokens['response-time'](req, res), 'ms',
+        JSON.stringify(req.body)
     ].join(' ')
-  }))
-
-const generateId = () => {
-    return Math.floor(Math.random() * 1000000)
-}
+}))
 
 app.get('/api/persons', (request, response) => {
     Person.find({}).then(persons => {
@@ -38,15 +34,15 @@ app.get('/api/persons/:id', (request, response, next) => {
             response.status(404).end()
         }
     })
-    .catch(error => next(error))
+        .catch(error => next(error))
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
     Person.findByIdAndRemove(request.params.id)
-    .then(() => {
-        response.status(204).end()
-    })
-    .catch(error => next(error))
+        .then(() => {
+            response.status(204).end()
+        })
+        .catch(error => next(error))
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
@@ -80,7 +76,7 @@ app.post('/api/persons', (request, response, next) => {
     person.save().then(savedPerson => {
         response.json(savedPerson)
     })
-    .catch(error => next(error))
+        .catch(error => next(error))
 })
 
 app.get('/info', (request, response) => {
@@ -88,13 +84,11 @@ app.get('/info', (request, response) => {
         const phonebookLength = persons.length
         const currDate = new Date().toLocaleString()
         response.send(
-            "<div>Phonebook has info for " 
+            '<div>Phonebook has info for ' 
             + phonebookLength 
-            + " people</div><div>" + currDate + "</div>"
+            + ' people</div><div>' + currDate + '</div>'
         )
     })
-    
-    
 })
 
 const unknownEndpoint = (request, response) => {
